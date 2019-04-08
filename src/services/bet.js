@@ -5,6 +5,7 @@ import vntkit from 'vnt-kit'
 import Config from './config'
 
 
+var CHAINID = Config.chainId;
 var contractAddress = Config.contractAddress;
 var vnt = new Vnt();
 vnt.setProvider(new vnt.providers.HttpProvider(Config.providerUrl));
@@ -27,7 +28,7 @@ class BetService {
   requestAmount = (from, prikey, cb) => {
     var funcName = 'GetAmount';
     var data = contract.packFunctionData(funcName);
-    var options = {from: from, to: contractAddress, data: data, chainId: 1333};
+    var options = {from: from, to: contractAddress, data: data, chainId: CHAINID};
     vnt.core.call(options, function(err, res) {
       cb(err, vnt.fromWei(contract.unPackOutput(funcName, res)));
     });
@@ -35,7 +36,7 @@ class BetService {
   requestNickName = (from, prikey, cb) => {
     var funcName = 'GetNickName';
     var data = contract.packFunctionData(funcName);
-    var options = {from: from, to: contractAddress, data: data, chainId: 1333};
+    var options = {from: from, to: contractAddress, data: data, chainId: CHAINID};
     vnt.core.call(options, function(err, res) {
       cb(err, contract.unPackOutput(funcName, res));
     });
@@ -43,7 +44,7 @@ class BetService {
   getWinAndLose = (from, prikey, cb) => {
     var funcName = 'GetWinAndLose';
     var data = contract.packFunctionData(funcName);
-    var options = {from: from, to: contractAddress, data: data, chainId: 1333};
+    var options = {from: from, to: contractAddress, data: data, chainId: CHAINID};
     vnt.core.call(options, function(err, res) {
       cb(err, contract.unPackOutput(funcName, res));
     });
@@ -51,7 +52,7 @@ class BetService {
   getPool = (cb) => {
     var funcName = 'GetPool';
     var data = contract.packFunctionData(funcName);
-    var options = { to: contractAddress, data: data, chainId: 1333};
+    var options = { to: contractAddress, data: data, chainId: CHAINID};
     vnt.core.call(options, function(err, res) {
       cb(err, vnt.fromWei(contract.unPackOutput(funcName, res)));
     });
@@ -59,7 +60,7 @@ class BetService {
   getTotalGameCount = (cb) => {
     var funcName = 'GetTotalGameCount';
     var data = contract.packFunctionData(funcName);
-    var options = {to: contractAddress, data: data, chainId: 1333};
+    var options = {to: contractAddress, data: data, chainId: CHAINID};
     vnt.core.call(options, function(err, res) {
       cb(err, contract.unPackOutput(funcName, res));
     });
@@ -103,7 +104,7 @@ class BetService {
       gasLimit: vnt.toHex(4000000),
       data: data,
       value: vnt.toHex(vnt.toWei(value)),
-      chainId: 1333
+      chainId: CHAINID
     };
     var tx = new TX(options);
     tx.sign(new Buffer(

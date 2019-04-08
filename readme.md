@@ -10,6 +10,8 @@
   
 参考[教程](https://github.com/vntchain/vnt-documentation/blob/master/smart-contract/deploy-contract-tutorial.md)
 
+dice合约部署[教程]()
+
 请确保合约部署账号有足够的VNT用于在合约初始化时转账一定量的VNT
     
 ### 启动DAPP页面

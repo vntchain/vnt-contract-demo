@@ -1,0 +1,14 @@
+{
+  "name": "deploy",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vnt": "git+https://github.com/vntchain/vnt.js.git",
+    "vnt-kit": "git+https://github.com/vntchain/vnt-kit.js.git"
+  }
+}
