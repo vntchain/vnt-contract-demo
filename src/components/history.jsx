@@ -6,7 +6,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
-import Vnt from 'vnt'
+import Vnt from 'vnt';
 var vnt = new Vnt();
 
 const styles = theme => ({

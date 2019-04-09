@@ -1,15 +1,15 @@
-import Account from 'ethereumjs-account'
-import TX from 'ethereumjs-tx'
-import Vnt from 'vnt'
-import vntkit from 'vnt-kit'
-import Config from './config'
+import Account from 'ethereumjs-account';
+import TX from 'ethereumjs-tx';
+import Vnt from 'vnt';
+import vntkit from 'vnt-kit';
+import Config from './config';
 
 
 var CHAINID = Config.chainId;
 var contractAddress = Config.contractAddress;
 var vnt = new Vnt();
 vnt.setProvider(new vnt.providers.HttpProvider(Config.providerUrl));
-const abi = Config.abi
+const abi = Config.abi;
 var contract = vnt.core.contract(JSON.parse(abi));
 var contractIns = contract.at(contractAddress);
 
@@ -28,7 +28,8 @@ class BetService {
   requestAmount = (from, prikey, cb) => {
     var funcName = 'GetAmount';
     var data = contract.packFunctionData(funcName);
-    var options = {from: from, to: contractAddress, data: data, chainId: CHAINID};
+    var options =
+        {from: from, to: contractAddress, data: data, chainId: CHAINID};
     vnt.core.call(options, function(err, res) {
       cb(err, vnt.fromWei(contract.unPackOutput(funcName, res)));
     });
@@ -36,7 +37,8 @@ class BetService {
   requestNickName = (from, prikey, cb) => {
     var funcName = 'GetNickName';
     var data = contract.packFunctionData(funcName);
-    var options = {from: from, to: contractAddress, data: data, chainId: CHAINID};
+    var options =
+        {from: from, to: contractAddress, data: data, chainId: CHAINID};
     vnt.core.call(options, function(err, res) {
       cb(err, contract.unPackOutput(funcName, res));
     });
@@ -44,7 +46,8 @@ class BetService {
   getWinAndLose = (from, prikey, cb) => {
     var funcName = 'GetWinAndLose';
     var data = contract.packFunctionData(funcName);
-    var options = {from: from, to: contractAddress, data: data, chainId: CHAINID};
+    var options =
+        {from: from, to: contractAddress, data: data, chainId: CHAINID};
     vnt.core.call(options, function(err, res) {
       cb(err, contract.unPackOutput(funcName, res));
     });
@@ -52,7 +55,7 @@ class BetService {
   getPool = (cb) => {
     var funcName = 'GetPool';
     var data = contract.packFunctionData(funcName);
-    var options = { to: contractAddress, data: data, chainId: CHAINID};
+    var options = {to: contractAddress, data: data, chainId: CHAINID};
     vnt.core.call(options, function(err, res) {
       cb(err, vnt.fromWei(contract.unPackOutput(funcName, res)));
     });
@@ -126,8 +129,8 @@ class BetService {
   };
   watchEvent = (from, cb) => {
     // watch for an event with {some: 'args'}
-    if(this.events){
-      this.events.stopWatching()
+    if (this.events) {
+      this.events.stopWatching();
     }
     this.events =
         contractIns.allEvents({from: from}, {fromBlock: 0, toBlock: 'latest'});
@@ -142,7 +145,7 @@ class BetService {
   };
   watchAllEvent = (from, cb) => {
     // watch for an event with {some: 'args'}
-    if(this.allevents){
+    if (this.allevents) {
       this.allevents.stopWatching()
     }
     this.allevents =

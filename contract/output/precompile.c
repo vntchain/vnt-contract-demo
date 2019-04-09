@@ -33,45 +33,47 @@ EVENT EVENT_WITHDRAW(indexed address from, string nickname, uint256 amount);
 EVENT EVENT_DEPOSIT(indexed address from, string nickname, uint256 amount);
 EVENT EVENT_NICKNAME(indexed address from, string nickName);
 EVENT EVENT_GETFREEVNT(indexed address from, bool got);
+EVENT EVENT_TEST( int64 test);
 
 
-void keypu69znoi(){
-AddKeyInfo( &freeAmount, 5, &freeAmount, 9, false);
-AddKeyInfo( &accounts.value.loseCount, 4, &accounts, 9, false);
-AddKeyInfo( &accounts.value.loseCount, 4, &accounts.key, 7, false);
-AddKeyInfo( &accounts.value.loseCount, 4, &accounts.value.loseCount, 9, false);
-AddKeyInfo( &deposit, 5, &deposit, 9, false);
-AddKeyInfo( &accounts.value.nickName, 6, &accounts, 9, false);
-AddKeyInfo( &accounts.value.nickName, 6, &accounts.key, 7, false);
-AddKeyInfo( &accounts.value.nickName, 6, &accounts.value.nickName, 9, false);
-AddKeyInfo( &accounts.value.chickenCount, 4, &accounts, 9, false);
-AddKeyInfo( &accounts.value.chickenCount, 4, &accounts.key, 7, false);
-AddKeyInfo( &accounts.value.chickenCount, 4, &accounts.value.chickenCount, 9, false);
-AddKeyInfo( &accounts.value.winReward, 5, &accounts, 9, false);
-AddKeyInfo( &accounts.value.winReward, 5, &accounts.key, 7, false);
-AddKeyInfo( &accounts.value.winReward, 5, &accounts.value.winReward, 9, false);
-AddKeyInfo( &totalGameCount, 4, &totalGameCount, 9, false);
-AddKeyInfo( &fee, 5, &fee, 9, false);
-AddKeyInfo( &owner, 7, &owner, 9, false);
+void keywr5o5jl6(){
 AddKeyInfo( &accounts.value.winCount, 4, &accounts, 9, false);
 AddKeyInfo( &accounts.value.winCount, 4, &accounts.key, 7, false);
 AddKeyInfo( &accounts.value.winCount, 4, &accounts.value.winCount, 9, false);
-AddKeyInfo( &accounts.value.freeAddress, 8, &accounts, 9, false);
-AddKeyInfo( &accounts.value.freeAddress, 8, &accounts.key, 7, false);
-AddKeyInfo( &accounts.value.freeAddress, 8, &accounts.value.freeAddress, 9, false);
-AddKeyInfo( &accounts.value.loseAmount, 5, &accounts, 9, false);
-AddKeyInfo( &accounts.value.loseAmount, 5, &accounts.key, 7, false);
-AddKeyInfo( &accounts.value.loseAmount, 5, &accounts.value.loseAmount, 9, false);
 AddKeyInfo( &accounts.value.balance, 5, &accounts, 9, false);
 AddKeyInfo( &accounts.value.balance, 5, &accounts.key, 7, false);
 AddKeyInfo( &accounts.value.balance, 5, &accounts.value.balance, 9, false);
+AddKeyInfo( &accounts.value.freeAddress, 8, &accounts, 9, false);
+AddKeyInfo( &accounts.value.freeAddress, 8, &accounts.key, 7, false);
+AddKeyInfo( &accounts.value.freeAddress, 8, &accounts.value.freeAddress, 9, false);
+AddKeyInfo( &accounts.value.winReward, 5, &accounts, 9, false);
+AddKeyInfo( &accounts.value.winReward, 5, &accounts.key, 7, false);
+AddKeyInfo( &accounts.value.winReward, 5, &accounts.value.winReward, 9, false);
+AddKeyInfo( &accounts.value.loseAmount, 5, &accounts, 9, false);
+AddKeyInfo( &accounts.value.loseAmount, 5, &accounts.key, 7, false);
+AddKeyInfo( &accounts.value.loseAmount, 5, &accounts.value.loseAmount, 9, false);
+AddKeyInfo( &accounts.value.nickName, 6, &accounts, 9, false);
+AddKeyInfo( &accounts.value.nickName, 6, &accounts.key, 7, false);
+AddKeyInfo( &accounts.value.nickName, 6, &accounts.value.nickName, 9, false);
+AddKeyInfo( &owner, 7, &owner, 9, false);
+AddKeyInfo( &freeAmount, 5, &freeAmount, 9, false);
+AddKeyInfo( &accounts.value.chickenCount, 4, &accounts, 9, false);
+AddKeyInfo( &accounts.value.chickenCount, 4, &accounts.key, 7, false);
+AddKeyInfo( &accounts.value.chickenCount, 4, &accounts.value.chickenCount, 9, false);
+AddKeyInfo( &deposit, 5, &deposit, 9, false);
+AddKeyInfo( &totalGameCount, 4, &totalGameCount, 9, false);
+AddKeyInfo( &fee, 5, &fee, 9, false);
+AddKeyInfo( &accounts.value.loseCount, 4, &accounts, 9, false);
+AddKeyInfo( &accounts.value.loseCount, 4, &accounts.key, 7, false);
+AddKeyInfo( &accounts.value.loseCount, 4, &accounts.value.loseCount, 9, false);
 }
 constructor $Dice()
 {
-keypu69znoi();
+keywr5o5jl6();
 InitializeVariables();
   owner = GetSender();
   totalGameCount = 0;
+  EVENT_TEST("-1");
 }
 
 
@@ -141,13 +143,13 @@ uint64 random()
 
 UNMUTABLE
 uint64 testRandom() {
-keypu69znoi(); return random(); }
+keywr5o5jl6(); return random(); }
 
 
 MUTABLE
 void Bet(uint256 amount, int32 bigger)
 {
-keypu69znoi();
+keywr5o5jl6();
   PrintUint256T("get amount:", amount);
   checkAmount(amount);
   checkPool(amount);
@@ -181,7 +183,7 @@ keypu69znoi();
     
     accounts.key = sender;
     uint256 reward = getReward(amount);
-    reward = U256SafeMul(reward, U256(10));
+    reward = U256SafeMul(reward, U256(100));
     accounts.value.balance = U256SafeAdd(accounts.value.balance, reward);
     accounts.value.winReward = U256SafeAdd(accounts.value.winReward, reward);
     deposit = U256SafeAdd(deposit, reward);
@@ -204,7 +206,7 @@ keypu69znoi();
 MUTABLE
 void Withdraw(uint256 amount)
 {
-keypu69znoi();
+keywr5o5jl6();
   checkAmount(amount);
   address from = GetSender();
   if (TransferFromContract(from, amount) == true)
@@ -221,7 +223,7 @@ keypu69znoi();
 MUTABLE
 void WithdrawAll()
 {
-keypu69znoi();
+keywr5o5jl6();
   accounts.key = GetSender();
   uint256 amount = accounts.value.balance;
   Withdraw(amount);
@@ -231,7 +233,7 @@ keypu69znoi();
 MUTABLE
 void WithdrawPool(uint256 amount)
 {
-keypu69znoi();
+keywr5o5jl6();
   checkOwner();
   checkPool(amount);
   TransferFromContract(GetSender(), amount);
@@ -241,7 +243,7 @@ keypu69znoi();
 MUTABLE
 void WithdrawPoolAll()
 {
-keypu69znoi();
+keywr5o5jl6();
   uint256 amount = GetBalanceFromAddress(GetContractAddress());
   WithdrawPool(amount);
 }
@@ -249,13 +251,13 @@ keypu69znoi();
 
 MUTABLE
 void $DepositPool() {
-keypu69znoi();}
+keywr5o5jl6();}
 
 
 MUTABLE
 void $Deposit()
 {
-keypu69znoi();
+keywr5o5jl6();
   uint256 amount = GetValue();
   address from = GetSender();
   accounts.key = from;
@@ -268,7 +270,7 @@ keypu69znoi();
 MUTABLE
 void GetFreeChips()
 {
-keypu69znoi();
+keywr5o5jl6();
   address from = GetSender();
   accounts.key = from;
   bool flag = accounts.value.freeAddress;
@@ -282,7 +284,8 @@ keypu69znoi();
 MUTABLE
 void SetNickName(string name)
 {
-keypu69znoi();
+keywr5o5jl6();
+  EVENT_TEST( -1);
   address from = GetSender();
   accounts.key = from;
   accounts.value.nickName = name;
@@ -292,35 +295,37 @@ keypu69znoi();
 UNMUTABLE
 string GetNickNameFromAddress(address addr)
 {
-keypu69znoi();
+keywr5o5jl6();
   accounts.key = addr;
   return accounts.value.nickName;
 }
 
 UNMUTABLE
 string GetNickName() {
-keypu69znoi(); return GetNickNameFromAddress(GetSender()); }
+keywr5o5jl6(); 
+  return GetNickNameFromAddress(GetSender());
+}
 
 UNMUTABLE
 address GetOwner() {
-keypu69znoi(); return owner; }
+keywr5o5jl6(); return owner; }
 
 UNMUTABLE
 uint256 GetAmountFromAddress(address addr)
 {
-keypu69znoi();
+keywr5o5jl6();
   accounts.key = addr;
   return accounts.value.balance;
 }
 
 UNMUTABLE
 uint256 GetAmount() {
-keypu69znoi(); return GetAmountFromAddress(GetSender()); }
+keywr5o5jl6(); return GetAmountFromAddress(GetSender()); }
 
 UNMUTABLE
 string GetWinAndLose()
 {
-keypu69znoi();
+keywr5o5jl6();
   accounts.key = GetSender();
   uint64 win = accounts.value.winCount;
   uint64 lose = accounts.value.loseCount;
@@ -331,7 +336,7 @@ keypu69znoi();
 UNMUTABLE
 uint256 GetPool()
 {
-keypu69znoi();
+keywr5o5jl6();
   uint256 amount = GetBalanceFromAddress(GetContractAddress());
   return U256SafeSub(amount, deposit);
 }
@@ -339,9 +344,9 @@ keypu69znoi();
 UNMUTABLE
 uint64 GetTotalGameCount()
 {
-keypu69znoi();
+keywr5o5jl6();
   return totalGameCount;
 }
 
 $_() {
-keypu69znoi(); $Deposit(); }
+keywr5o5jl6(); $Deposit(); }

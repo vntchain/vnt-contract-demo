@@ -1,7 +1,6 @@
 #include "vntlib.h"
 
-typedef struct
-{
+typedef struct {
   uint256 balance;     //存款
   string nickName;     //昵称
   bool freeAddress;    //是否已经领取过赠送的筹码
@@ -34,15 +33,13 @@ EVENT EVENT_DEPOSIT(indexed address from, string nickname, uint256 amount);
 EVENT EVENT_NICKNAME(indexed address from, string nickName);
 EVENT EVENT_GETFREEVNT(indexed address from, bool got);
 
-constructor $Dice()
-{
+constructor $Dice() {
   owner = GetSender();
   totalGameCount = 0;
 }
 
 // getFee
-uint256 getReward(uint256 amount)
-{
+uint256 getReward(uint256 amount) {
   PrintUint256T("get amount in getreward:", amount);
   PrintUint256T("get fee1:", fee);
   uint256 res = U256SafeDiv(amount, fee);
@@ -53,8 +50,7 @@ uint256 getReward(uint256 amount)
 }
 
 //是否有足够的赌注
-void checkAmount(uint256 amount)
-{
+void checkAmount(uint256 amount) {
   Require(U256_Cmp(amount, U256(0) == 1), "amount must > 0");
   address from = GetSender();
   accounts.key = from;
@@ -66,8 +62,7 @@ void checkAmount(uint256 amount)
 }
 
 //奖池是否足够
-void checkPool(uint256 amount)
-{
+void checkPool(uint256 amount) {
   uint256 contractBalance = GetBalanceFromAddress(GetContractAddress());
   PrintAddress("get contract address:", GetContractAddress());
   PrintUint256T("get contract balance:", contractBalance);
@@ -80,14 +75,12 @@ void checkPool(uint256 amount)
       "No enough money in prize pool");
 }
 
-void checkOwner()
-{
+void checkOwner() {
   address sender = GetSender();
   Require(Equal(sender, owner) == true, "Only the owner can operate");
 }
 
-uint64 random()
-{
+uint64 random() {
   uint64 time = GetTimestamp();
   PrintUint64T("get time", time);
   string time_sha3 = SHA3(SHA3(SHA3(FromU64(time))));
@@ -110,16 +103,14 @@ uint64 testRandom() { return random(); }
 
 //-1:<50,0:=50,1:>50
 MUTABLE
-void Bet(uint256 amount, int32 bigger)
-{
+void Bet(uint256 amount, int32 bigger) {
   PrintUint256T("get amount:", amount);
   checkAmount(amount);
   checkPool(amount);
   address sender = GetSender();
   uint64 res = random();
   totalGameCount += 1;
-  if (res > 50 && bigger == 1)
-  {
+  if (res > 50 && bigger == 1) {
     // you win
     accounts.key = sender;
     uint256 reward = getReward(amount);
@@ -128,9 +119,7 @@ void Bet(uint256 amount, int32 bigger)
     deposit = U256SafeAdd(deposit, reward);
     accounts.value.winCount += 1;
     EVENT_BET(sender, accounts.value.nickName, amount, bigger, res, reward);
-  }
-  else if (res < 50 && bigger == -1)
-  {
+  } else if (res < 50 && bigger == -1) {
     // you win
     accounts.key = sender;
     uint256 reward = getReward(amount);
@@ -139,9 +128,7 @@ void Bet(uint256 amount, int32 bigger)
     deposit = U256SafeAdd(deposit, reward);
     accounts.value.winCount += 1;
     EVENT_BET(sender, accounts.value.nickName, amount, bigger, res, reward);
-  }
-  else if (res == 50 && bigger == 0)
-  {
+  } else if (res == 50 && bigger == 0) {
     // you are the luckist man
     accounts.key = sender;
     uint256 reward = getReward(amount);
@@ -151,9 +138,7 @@ void Bet(uint256 amount, int32 bigger)
     deposit = U256SafeAdd(deposit, reward);
     accounts.value.chickenCount += 1;
     EVENT_BET(sender, accounts.value.nickName, amount, bigger, res, reward);
-  }
-  else
-  {
+  } else {
     // you lose
     accounts.key = sender;
     accounts.value.balance = U256SafeSub(accounts.value.balance, amount);
@@ -166,12 +151,10 @@ void Bet(uint256 amount, int32 bigger)
 
 //提款
 MUTABLE
-void Withdraw(uint256 amount)
-{
+void Withdraw(uint256 amount) {
   checkAmount(amount);
   address from = GetSender();
-  if (TransferFromContract(from, amount) == true)
-  {
+  if (TransferFromContract(from, amount) == true) {
 
     accounts.key = from;
     accounts.value.balance = U256SafeSub(accounts.value.balance, amount);
@@ -182,8 +165,7 @@ void Withdraw(uint256 amount)
 
 //提取全部
 MUTABLE
-void WithdrawAll()
-{
+void WithdrawAll() {
   accounts.key = GetSender();
   uint256 amount = accounts.value.balance;
   Withdraw(amount);
@@ -191,8 +173,7 @@ void WithdrawAll()
 
 //提取奖池，only owner
 MUTABLE
-void WithdrawPool(uint256 amount)
-{
+void WithdrawPool(uint256 amount) {
   checkOwner();
   checkPool(amount);
   TransferFromContract(GetSender(), amount);
@@ -200,8 +181,7 @@ void WithdrawPool(uint256 amount)
 
 //提取奖池
 MUTABLE
-void WithdrawPoolAll()
-{
+void WithdrawPoolAll() {
   uint256 amount = GetBalanceFromAddress(GetContractAddress());
   WithdrawPool(amount);
 }
@@ -212,8 +192,7 @@ void $DepositPool() {}
 
 //存款
 MUTABLE
-void $Deposit()
-{
+void $Deposit() {
   uint256 amount = GetValue();
   address from = GetSender();
   accounts.key = from;
@@ -224,8 +203,7 @@ void $Deposit()
 
 //免费筹获取100VNT的筹码,每个账号可以获取一次
 MUTABLE
-void GetFreeChips()
-{
+void GetFreeChips() {
   address from = GetSender();
   accounts.key = from;
   bool flag = accounts.value.freeAddress;
@@ -237,8 +215,8 @@ void GetFreeChips()
 }
 
 MUTABLE
-void SetNickName(string name)
-{
+void SetNickName(string name) {
+  EVENT_TEST(-1);
   address from = GetSender();
   accounts.key = from;
   accounts.value.nickName = name;
@@ -246,8 +224,7 @@ void SetNickName(string name)
 }
 
 UNMUTABLE
-string GetNickNameFromAddress(address addr)
-{
+string GetNickNameFromAddress(address addr) {
   accounts.key = addr;
   return accounts.value.nickName;
 }
@@ -259,8 +236,7 @@ UNMUTABLE
 address GetOwner() { return owner; }
 
 UNMUTABLE
-uint256 GetAmountFromAddress(address addr)
-{
+uint256 GetAmountFromAddress(address addr) {
   accounts.key = addr;
   return accounts.value.balance;
 }
@@ -269,26 +245,23 @@ UNMUTABLE
 uint256 GetAmount() { return GetAmountFromAddress(GetSender()); }
 
 UNMUTABLE
-string GetWinAndLose()
-{
+string GetWinAndLose() {
   accounts.key = GetSender();
   uint64 win = accounts.value.winCount;
   uint64 lose = accounts.value.loseCount;
   uint64 chicken = accounts.value.chickenCount;
-  return Concat(Concat(Concat(Concat(FromU64(win), "-"), FromU64(chicken)), "-"), FromU64(lose));
+  return Concat(
+      Concat(Concat(Concat(FromU64(win), "-"), FromU64(chicken)), "-"),
+      FromU64(lose));
 }
 
 UNMUTABLE
-uint256 GetPool()
-{
+uint256 GetPool() {
   uint256 amount = GetBalanceFromAddress(GetContractAddress());
   return U256SafeSub(amount, deposit);
 }
 
 UNMUTABLE
-uint64 GetTotalGameCount()
-{
-  return totalGameCount;
-}
+uint64 GetTotalGameCount() { return totalGameCount; }
 
 $_() { $Deposit(); }
