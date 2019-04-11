@@ -1,6 +1,6 @@
 
 
-import BigNumber from 'bignumber.js';
+
 var Config = {
   contractAddress: '0x143f5e185e5724a1794739d37245b5b790d9e981',
   providerUrl: 'http://localhost:8880',

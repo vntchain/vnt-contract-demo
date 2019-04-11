@@ -55,7 +55,7 @@ class Wallet extends React.Component {
   };
   unlockAccount = () => {
     var account = BetService.unlockAccount(this.props.accountmodel.keystore, this.props.accountmodel.password);
-    if (account.address != '') {
+    if (account.address !== '') {
       this.props.dispatch({
         type: 'accountmodel/saveAccount',
         address: account.address.substring(2, 42),

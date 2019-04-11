@@ -17,9 +17,20 @@ vnt.personal.unlockAccount(from1, pass1);
 var codeFile =
     '../output/$Dice.compress';
 var abiFile =
-    '../contract/output/abi.json';
+    '../output/$Dice.abi';
 var wasmabi = fs.readFileSync(abiFile);
 var abi = JSON.parse(wasmabi.toString('utf-8'));
+
+function deployWasmContract1() {
+  var contract = vnt.core.contract(abi).codeFile(codeFile);
+  var deployContract = contract.packContructorData(
+      { 
+        data: contract.code,  
+        gas: 4000000,
+        value: vnt.toWei(100000000, 'vnt'),
+      });
+  console.log(deployContract);
+}
 
 
 function deployWasmContract() {
@@ -89,7 +100,7 @@ function TestRandom() {
 }
 
 
-deployWasmContract();
+deployWasmContract1();
 
 var contractAddress = '0x5c876269742f06ccb998d39c4c3b6546d35b5dfb';
 // GetPool();

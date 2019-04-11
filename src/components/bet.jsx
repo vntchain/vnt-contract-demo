@@ -14,7 +14,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
@@ -80,7 +79,6 @@ class Bet extends React.Component {
   };
   render() {
     const {classes, betmodel} = this.props;
-    const bull = <span className={classes.bullet}>•</span>;
     return (
       <div>
         <span className={classes.span}>当前奖池：{betmodel.pool + ""}VNT</span>

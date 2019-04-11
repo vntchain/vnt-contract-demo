@@ -48,9 +48,7 @@ class History extends React.Component {
                     winorlosestr ="输了"; 
 
                 }
-                if (nickname.length<=4){
-                    nickname = nickname
-                }else{
+                if (nickname.length>4){
                     nickname = nickname.substring(0,2)+"**"+nickname.substring(nickname.length-2,nickname.length);
                 }
                 from=from.substring(0,5)+"***"+from.substring(from.length-2,from.length);
@@ -62,6 +60,8 @@ class History extends React.Component {
                         </Avatar>
                         <ListItemText primary={text1} secondary="" />
                     </ListItem>)
+            }else{
+              return ({})
             }
             
         })

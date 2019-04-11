@@ -1,9 +1,8 @@
-import Account from 'ethereumjs-account';
+
 import TX from 'ethereumjs-tx';
 import Vnt from 'vnt';
 import vntkit from 'vnt-kit';
 import Config from './config';
-
 
 var CHAINID = Config.chainId;
 var contractAddress = Config.contractAddress;
