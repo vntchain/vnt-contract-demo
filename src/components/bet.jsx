@@ -64,6 +64,7 @@ class Bet extends React.Component {
   };
   sendBet = () => {
     var amount = this.props.betmodel.betamount;
+    console.log("amount",amount)
     if (amount >= 100000) {
       this.openDialog();
     } else {

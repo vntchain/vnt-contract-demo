@@ -60,10 +60,7 @@ class History extends React.Component {
                         </Avatar>
                         <ListItemText primary={text1} secondary="" />
                     </ListItem>)
-            }else{
-              return ({})
             }
-            
         })
     }
     </List>
