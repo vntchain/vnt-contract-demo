@@ -1,5 +1,5 @@
 const testKeystore =
-    `{"address":"122369f04f32269598789998de33e3d56e2c507a","crypto":{"cipher":"aes-128-ctr","ciphertext":"323e3949406f96f05c20603ed1ba2bef0b2bbc33841bc5bf8277a9501f48fe7e","cipherparams":{"iv":"91df29183f9804ab83c0ebd56a99028a"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"94e5d7f35fe1a017cf42f61cd25831ea451ad305a88a995622e0cad0af5bce86"},"mac":"08e268f1bc79f428821c76fbf2886dea008f26f0159f350f53659d07a59ae671"},"id":"110d9f51-20c6-488b-aa74-398200c6417b","version":3}`;
+    `{"address":"0daa6c3979aa1c2f0886d95df473879732196a29","crypto":{"cipher":"aes-128-ctr","ciphertext":"b72a89f4da0a8c4e7a9d140dc8f9bac34e678c20be2d77ed9b736e8d62507dae","cipherparams":{"iv":"9d89bfe03999ffa69c147a2faea311d7"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"1ebc2e5284791889ebc36d3774be696e20c35ddc548591cbcc7764ceb6161e66"},"mac":"9f2c8b62ea2ab4d74f4cdcdb8a11be56b730dbc9c6258ef3c133409ad9d2dc99"},"id":"975fa804-bb42-4dd6-a85e-359ee7621820","version":3}`;
 const testPassword = ``;
 
 export default {

@@ -1,9 +1,9 @@
 var fs = require('fs'); 
 var Vnt = require('vnt');
 var vnt = new Vnt();
-vnt.setProvider(new vnt.providers.HttpProvider('http://localhost:8880'));
+vnt.setProvider(new vnt.providers.HttpProvider('http://192.168.9.4:8545'));
 
-var from1 = '0x122369f04f32269598789998de33e3d56e2c507a';
+var from1 = '0x0daa6c3979aa1c2f0886d95df473879732196a29';
 var pass1 = '';
 var from2 = '0x3dcf0b3787c31b2bdf62d5bc9128a79c2bb18829';
 var pass2 = '';
@@ -100,7 +100,7 @@ function TestRandom() {
 }
 
 
-deployWasmContract1();
+deployWasmContract();
 
 var contractAddress = '0x5c876269742f06ccb998d39c4c3b6546d35b5dfb';
 // GetPool();
