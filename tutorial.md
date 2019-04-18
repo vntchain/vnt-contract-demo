@@ -7,6 +7,9 @@
 * [``vnt.js``](https://github.com/vntchain/vnt.js)，JavaScript接口，用于提供常用的账户查询，转账，合约等相关操作。
 * [``vnt-kit.js``](https://github.com/vntchain/vnt-kit.js)，JavaScript接口，用于提供钱包相关的基本操作。
 
+## 合约语法
+
+* [语法](https://github.com/vntchain/vnt-documentation/blob/master/smart-contract/deploy-contract-tutorial.md)
 
 ## 合约编写
 
@@ -314,6 +317,22 @@ $_() { $Deposit(); }
 ## 合约编译
 
 合约编译需要使用``bottle``,编译完后会生成abi文件和xxx.compress文件，abi文件用于和合约的交互，compress文件是压缩后的合约字节码，用于合约的部署
+
+```
+$ bottle compile -code ./contract/dice.c
+
+>>>Compile finished. 633.684578ms
+>>>Input file
+   Contract path :./contract/dice.c
+>>>Output file
+   Abi path: contract/output/$Dice.abi
+   Precompile code path: contract/output/$Dice_precompile.c
+   Wasm path: contract/output/$Dice.wasm
+   Compress Data path: contract/output/$Dice.compress
+   Compress Hex Data path: contract/output/$Dice.hex
+   Deploy JS path: contract/output/$Dice.js
+>>>Please use $Dice.compress when you want to create a contract
+```
 
 ## 合约部署
 
