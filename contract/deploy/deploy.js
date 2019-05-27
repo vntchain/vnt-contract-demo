@@ -1,15 +1,25 @@
 var fs = require('fs'); 
 var Vnt = require('vnt');
+var vntkit = require('vnt-kit');
+var TX = require('ethereumjs-tx');
 var vnt = new Vnt();
-vnt.setProvider(new vnt.providers.HttpProvider('http://localhost:8880'));
+
+
+var privider = 'http://47.102.157.204:8880';
+// var privider = 'http://127.0.0.1:8880';
+var chainid = 2;
+
+vnt.setProvider(new vnt.providers.HttpProvider(privider));
+
 
 var from1 = '0x122369f04f32269598789998de33e3d56e2c507a';
+var from1Keystore = 'replace';
 var pass1 = '';
 var from2 = '0x3dcf0b3787c31b2bdf62d5bc9128a79c2bb18829';
 var pass2 = '';
 var toAddr = '0x3ea7a559e44e8cabc362ca28b6211611467c76f3';
 
-vnt.personal.unlockAccount(from1, pass1);
+// vnt.personal.unlockAccount(from1, pass1);
 // vnt.personal.unlockAccount(from2, pass2);
 
 
@@ -21,41 +31,36 @@ var abiFile =
 var wasmabi = fs.readFileSync(abiFile);
 var abi = JSON.parse(wasmabi.toString('utf-8'));
 
-function deployWasmContract1() {
+function deployWasmContractWithPrivateKey() {
   var contract = vnt.core.contract(abi).codeFile(codeFile);
-  var deployContract = contract.packContructorData(
-      { 
-        data: contract.code,  
-        gas: 4000000,
-        value: vnt.toWei(100000000, 'vnt'),
-      });
-  console.log(deployContract);
-}
+  var deployContract = contract.packContructorData();
 
-
-function deployWasmContract() {
-  var contract = vnt.core.contract(abi).codeFile(codeFile);
-  var contractReturned = contract.new(
-      {
-        from: from1,  
-        data: contract.code,  
-        gas: 4000000,
-        value: vnt.toWei(100000000, 'vnt'),
-      },
-      function(err, myContract) {
-        console.log(err, myContract);
-        if (!err) {
-          if (!myContract.address) {
-            console.log('transactionHash: ', myContract.transactionHash)
-            getTransactionReceipt(
-                myContract.transactionHash, function(receipt) {
-                  console.log('receipt: ', receipt)
-                })
-          } else {
-            console.log('contract address: ', myContract.address)
-          }
-        }
-      });
+  var account = vntkit.account.decrypt(from1Keystore, pass1, false);
+  var nonce = vnt.core.getTransactionCount(account.address);
+  var options = {
+    nonce: nonce,
+    gasPrice: vnt.toHex(vnt.toWei(18, 'Gwei')),
+    gasLimit: vnt.toHex(4000000),
+    data: deployContract,
+    value: vnt.toHex(vnt.toWei(100, 'vnt')),
+    chainId: chainid
+  };
+  var tx = new TX(options);
+  tx.sign(new Buffer(
+    account.privateKey.substring(
+          2,
+          ),
+      'hex'));
+  var serializedTx = tx.serialize();
+  vnt.core.sendRawTransaction(
+    '0x' + serializedTx.toString('hex'), function(err, txHash) {
+      if (err) {
+        console.log('err happened: ', err)
+        console.log('transaction hash: ', txHash);
+      } else {
+        console.log('transaction hash: ', txHash);
+      }
+    });
 }
 
 function getTransactionReceipt(tx, cb) {
@@ -68,8 +73,6 @@ function getTransactionReceipt(tx, cb) {
     cb(receipt)
   }
 }
-
-
 
 function GetPool() {
   var contract = vnt.core.contract(abi).at(contractAddress);
@@ -100,9 +103,9 @@ function TestRandom() {
 }
 
 
-deployWasmContract1();
+deployWasmContractWithPrivateKey();
 
-var contractAddress = '0x5c876269742f06ccb998d39c4c3b6546d35b5dfb';
+// var contractAddress = '0x5c876269742f06ccb998d39c4c3b6546d35b5dfb';
 // GetPool();
 // Deposit();
 // Bet();
