@@ -376,7 +376,6 @@ function deployWasmContract() {
   var nonce = vnt.core.getTransactionCount(from);
   var options = {
     nonce: nonce,
-    to: vnt.toHex(""),
     gasPrice: vnt.toHex(30000000000000),
     gasLimit: vnt.toHex(4000000),
     data: deployContract,

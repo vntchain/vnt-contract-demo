@@ -7,7 +7,6 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
-import BetService from '../services/bet';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -55,6 +54,7 @@ class Bet extends React.Component {
       .dispatch({type: 'betmodel/save', [prop]: event.target.value});
   };
   send = () => {
+    var BetService = window.BetService;
     var amount = this.props.betmodel.betamount;
     var bigger = this.props.betmodel.bigger;
     var account = this.props.accountmodel.account;
@@ -64,7 +64,6 @@ class Bet extends React.Component {
   };
   sendBet = () => {
     var amount = this.props.betmodel.betamount;
-    console.log("amount",amount)
     if (amount >= 100000) {
       this.openDialog();
     } else {

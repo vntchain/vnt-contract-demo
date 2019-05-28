@@ -13,7 +13,6 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import BetService from '../services/bet';
 
 const styles = theme => ({
   textField: {
@@ -41,6 +40,9 @@ class Wallet extends React.Component {
     claimamount: 0,
   };
   componentDidMount = () => {
+    if (typeof window.vnt !== 'undefined'){
+      this.unlockAccount();
+    }
     this.refreshGlobal();
   };
   handleChange = prop => event => {
@@ -54,7 +56,17 @@ class Wallet extends React.Component {
     this.setState({ [prop]: event.target.value });
   };
   unlockAccount = () => {
-    var account = BetService.unlockAccount(this.props.accountmodel.keystore, this.props.accountmodel.password);
+    var BetService = window.BetService;
+    var account={
+      address:"",
+      privateKey:"",
+    }
+    if (typeof window.vnt === 'undefined'){
+      account = BetService.unlockAccount(this.props.accountmodel.keystore, this.props.accountmodel.password);
+    }else{
+      account.address = window.vnt.core.coinbase;
+    }
+
     if (account.address !== '') {
       this.props.dispatch({
         type: 'accountmodel/saveAccount',
@@ -86,6 +98,7 @@ class Wallet extends React.Component {
     });
   };
   getFreeClips = () => {
+    var BetService = window.BetService;
     var account = this.props.accountmodel.account;
     var _this = this;
     BetService.GetFreeChips(account.address, account.privateKey, function (err, amount) {
@@ -93,6 +106,7 @@ class Wallet extends React.Component {
     });
   };
   setNickName = () => {
+    var BetService = window.BetService;
     var account = this.props.accountmodel.account;
     var _this = this;
     BetService.SetNickName(this.state.nickname, account.address, account.privateKey, function (err, amount) {
@@ -100,6 +114,7 @@ class Wallet extends React.Component {
     });
   };
   refresh = (account) => {
+    var BetService = window.BetService;
     var _this = this;
     BetService.requestBalance(account.address, function (err, balance) {
       if (!err) {
@@ -136,6 +151,7 @@ class Wallet extends React.Component {
     this.refreshGlobal();
   };
   refreshGlobal = () => {
+    var BetService = window.BetService;
     var _this = this;
     BetService.getPool( function (err, pool) {
       if (!err) {
@@ -155,6 +171,7 @@ class Wallet extends React.Component {
     });
   };
   deposit = () => {
+    var BetService = window.BetService;
     var amount = this.state.depositamount;
     var account = this.props.accountmodel.account;
     var _this = this;
@@ -163,6 +180,7 @@ class Wallet extends React.Component {
     });
   };
   claim = () => {
+    var BetService = window.BetService;
     var amount = this.state.claimamount;
     var account = this.props.accountmodel.account;
     var _this = this;
@@ -171,6 +189,7 @@ class Wallet extends React.Component {
     });
   };
   claimAll = () => {
+    var BetService = window.BetService;
     var account = this.props.accountmodel.account;
     var _this = this;
     BetService.ClaimAll(account.address, account.privateKey, function (err, amount) {
@@ -184,52 +203,59 @@ class Wallet extends React.Component {
     const { classes, accountmodel } = this.props;
     return (
       <div>
-        <TextField
-          id="tf-keystore"
-          label="Keystore"
-          multiline
-          rows="4"
-          value={accountmodel.keystore}
-          className={classes.textField}
-          margin="normal"
-          variant="outlined"
-          onChange={this.handleChange('keystore')}
-          fullWidth
-        />
-        <Grid container alignItems="center" spacing={24}>
-          <Grid item xs={8}>
-            <TextField
-              id="tf-password"
-              label="Password"
-              className={classes.textField}
-              margin="normal"
-              variant="outlined"
-              fullWidth
-              value={accountmodel.password}
-              type={this.state.showPassword ? 'text' : 'password'}
-              onChange={this.handleChange('password')}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle password visibility"
-                      onClick={this.handleClickShowPassword}
-                    >
-                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <Button variant="outlined" size="large" color="primary"
-              onClick={this.unlockAccount}
-            >
-              解锁
-           </Button>
-          </Grid>
-        </Grid>
+        {
+          typeof window.vnt === 'undefined'?
+          <TextField
+            id="tf-keystore"
+            label="Keystore"
+            multiline
+            rows="4"
+            value={accountmodel.keystore}
+            className={classes.textField}
+            margin="normal"
+            variant="outlined"
+            onChange={this.handleChange('keystore')}
+            fullWidth
+          />:""
+          
+        }
+        {
+           typeof window.vnt === 'undefined'?
+           <Grid container alignItems="center" spacing={24}>
+            <Grid item xs={8}>
+              <TextField
+                id="tf-password"
+                label="Password"
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
+                fullWidth
+                value={accountmodel.password}
+                type={this.state.showPassword ? 'text' : 'password'}
+                onChange={this.handleChange('password')}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        onClick={this.handleClickShowPassword}
+                      >
+                        {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <Button variant="outlined" size="large" color="primary"
+                onClick={this.unlockAccount}
+              >
+                解锁
+            </Button>
+            </Grid>
+          </Grid>:""
+        }
         <Chip
           avatar={<Avatar>0x</Avatar>}
           label={accountmodel.address}
