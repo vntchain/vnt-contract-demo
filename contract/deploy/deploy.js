@@ -59,10 +59,18 @@ function GetPool() {
   console.log('result', r.toString());
 }
 
-function Deposit() {
+function GetAmount() {
   var contract = vnt.core.contract(abi).at(contractAddress);
   var amount = contract.GetAmount.call({from: from2})
   console.log('amount', amount.toString());
+}
+
+function Deposit(){
+  var contract = vnt.core.contract(abi);
+  var data = contract.packFunctionData("$Deposit");
+  var account = vntkit.account.decrypt(from2Keystore, pass2, false);
+
+  sendRawTransaction(account, contractAddress, data, vnt.toHex(10))
 }
 
 
@@ -114,6 +122,7 @@ deployWasmContractWithPrivateKey();
 
 // var contractAddress = '0x5c876269742f06ccb998d39c4c3b6546d35b5dfb';
 // GetPool();
+// GetAmount();
 // Deposit();
 // Bet();
 // TestRandom();
