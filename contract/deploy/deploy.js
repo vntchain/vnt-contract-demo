@@ -89,7 +89,7 @@ function Deposit() {
 
 function Bet() {
   var contract = vnt.core.contract(abi).at(contractAddress);
-  var r = contract.Bet.sendTransaction(vnt.toWei(10, 'vnt'), true, {
+  var r = contract.Bet.sendTransaction(vnt.toWei(10, 'vnt'), 1, {
     from: from2,
     gas: 4000000,
   });
